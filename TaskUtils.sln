@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskUtils", "TaskUtils\TaskUtils.csproj", "{3EE9B385-046C-4E15-B7DE-013CA71BB529}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTaskUtils", "TestTaskUtils\TestTaskUtils.csproj", "{F402A610-1047-4716-BD3B-D8538BD10542}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EE9B385-046C-4E15-B7DE-013CA71BB529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE9B385-046C-4E15-B7DE-013CA71BB529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE9B385-046C-4E15-B7DE-013CA71BB529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE9B385-046C-4E15-B7DE-013CA71BB529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F402A610-1047-4716-BD3B-D8538BD10542}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F402A610-1047-4716-BD3B-D8538BD10542}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F402A610-1047-4716-BD3B-D8538BD10542}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F402A610-1047-4716-BD3B-D8538BD10542}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
