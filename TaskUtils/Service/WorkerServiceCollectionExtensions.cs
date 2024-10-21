@@ -12,38 +12,38 @@ namespace TaskUtils.Service;
   {
     public static IServiceCollection AddWorkerService(
       this IServiceCollection services,
-      IConfiguration configuration,
-      params IHandler[] handlers)
+      ILogger<IServiceCollection> logger,
+      WorkerConfig configuration)
     {
-      List<WorkerConfig> workerConfigs = configuration.GetSection("workers").Get<List<WorkerConfig>>();
-      if (workerConfigs == null || workerConfigs.Count == 0)
-        throw new InvalidOperationException("No worker configurations found in the provided configuration section.");
-      return services.AddWorkerService(workerConfigs, handlers);
-    }
-
-    public static IServiceCollection AddWorkerService(
-      this IServiceCollection services,
-      WorkerConfig configuration,
-      params IHandler[] handlers)
-    {
-      IServiceCollection services1 = services;
       List<WorkerConfig> workerConfigs = new List<WorkerConfig>();
       workerConfigs.Add(configuration);
-      IHandler[] handlerArray = handlers;
-      return services1.AddWorkerService(workerConfigs, handlerArray);
+      
+      // Build the service provider to access registered services
+      var serviceProvider = services.BuildServiceProvider();
+      // Get all registered handlers
+      var handlers = serviceProvider.GetServices<IHandler>().ToList();
+
+      foreach (IHandler handler in handlers)
+        services.AddSingleton(handler.GetType(),  handler);
+      WorkerServiceCollectionExtensions.RegisterWorkers(services, handlers, workerConfigs, logger);
+      return services;
     }
 
     public static IServiceCollection AddWorkerService(
       this IServiceCollection services,
-      List<WorkerConfig> workerConfigs,
-      params IHandler[] handlers)
+      ILogger<IServiceCollection> logger,
+      IConfiguration configuration)
     {
-      ILogger<WorkerConfig> requiredService = services.BuildServiceProvider().GetRequiredService<ILogger<WorkerConfig>>();
-      WorkerServiceCollectionExtensions.ValidateWorkers(workerConfigs, (ILogger) requiredService);
-      WorkerServiceCollectionExtensions.ValidateHandlers(handlers, workerConfigs, (ILogger) requiredService);
+      List<WorkerConfig> workerConfigs = configuration.GetSection("workers").Get<List<WorkerConfig>>();
+      // Build the service provider to access registered services
+      var serviceProvider = services.BuildServiceProvider();
+      // Get all registered handlers
+      var handlers = serviceProvider.GetServices<IHandler>().ToList();
+      
+      WorkerServiceCollectionExtensions.ValidateHandlers(handlers, workerConfigs,logger);
       foreach (IHandler handler in handlers)
         services.AddSingleton(handler.GetType(), (object) handler);
-      WorkerServiceCollectionExtensions.RegisterWorkers(services, handlers, workerConfigs, (ILogger) requiredService);
+      WorkerServiceCollectionExtensions.RegisterWorkers(services, handlers, workerConfigs, logger);
       return services;
     }
 
@@ -64,7 +64,7 @@ namespace TaskUtils.Service;
     }
 
     private static void ValidateHandlers(
-      IHandler[] handlers,
+      List<IHandler> handlers,
       List<WorkerConfig> workerConfigs,
       ILogger logger)
     {
@@ -80,8 +80,8 @@ namespace TaskUtils.Service;
     }
 
     private static void RegisterWorkers(
-      IServiceCollection services,
-      IHandler[] handlers,
+      IServiceCollection services, 
+      List<IHandler>handlers,
       List<WorkerConfig> workerConfigs,
       ILogger logger)
     {

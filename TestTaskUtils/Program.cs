@@ -13,21 +13,16 @@ builder.Services.AddLogging();
 // Build the service provider to access the registered services
 
 // Now pass the instances of the handlers to the AddWorkerService method
-var tempServiceProvider = builder.Services.BuildServiceProvider();
 
-// make logger for your handlers
-var logger= tempServiceProvider.GetRequiredService<ILogger<IHandler>>();
 
-// Configure and add the worker service
-// Note: Handlers are  registered as singletons here inside AddWorkerService
-// Pass all your handlers that are specified in appsettings.json
+// Register your handlers
+builder.Services.AddSingleton<IHandler, HandlerA>();
+builder.Services.AddSingleton<IHandler, HandlerB>();
+
+//here is there workers
 builder.Services.AddWorkerService(
-    builder.Configuration,
-     new HandlerA(logger),
-     new HandlerB(logger),
-    new HandlerC(logger)
-    // Add more handlers as needed
-);
+    builder.Services.BuildServiceProvider().GetRequiredService<ILogger<IServiceCollection>>(),
+    builder.Configuration);
 
 
 // Add Swagger services

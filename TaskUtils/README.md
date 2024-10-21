@@ -1,6 +1,6 @@
 Certainly. I'll update the README to reflect these important points and the specific implementation details you've provided. Here's the revised README:
 
-# Job Utilities
+# Task Utilities
 
 This library provides utilities for managing recurring tasks with fixed delay with cancellation, fixed rate with cancellation, and scheduling execution patterns. It's designed to offer safe and efficient task scheduling without relying on potentially blocking or unsafe methods.
 
